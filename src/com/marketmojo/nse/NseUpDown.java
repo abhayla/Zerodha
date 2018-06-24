@@ -1,5 +1,6 @@
 package com.marketmojo.nse;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -9,11 +10,234 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 
 public class NseUpDown 
 {
-
+	ArrayList<String> openLow = new ArrayList<String>();
+	ArrayList<String> openLowNext50 = new ArrayList<String>();
+	ArrayList<String> openHigh = new ArrayList<String>();
+	ArrayList<String> openHighNext50 = new ArrayList<String>();
+	ArrayList<String> openHighMidcap = new ArrayList<String>();
+	ArrayList<String> openLowMidcap = new ArrayList<String>();
+	String high, low;
+	
+	public ArrayList<String>openHigh(ChromeOptions chrome, WebDriver driv)
+	{
+		driv.get("https://nseindia.com/live_market/dynaContent/live_watch/equities_stock_watch.htm");
+		driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr[3]/td[1]/a"));
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		for(int i = 3;i<53;i++)
+		 {
+		
+		 //open high
+			 if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText()))
+			{
+				System.out.print("in open high block");
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+				high = driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText();
+				openHigh.add(high);
+						
+			}
+		
+		 }
+		return openHigh;
+	}
+	//nifty midcap 50 open low
+	public ArrayList<String> openLowMidcap(ChromeOptions chrome, WebDriver driv)
+	{
+		driv.get("https://nseindia.com/live_market/dynaContent/live_watch/equities_stock_watch.htm");
+		Select dropdown = new Select(driv.findElement(By.xpath("//*[@id=\"bankNiftySelect\"]")));
+		dropdown.selectByIndex(2);
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		for(int i = 3;i<53;i++)
+		 {
+			driv.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			System.out.print(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText()+"::");
+			driv.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			System.out.print(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()+"::");
+			driv.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[6]")).getText());
+			try
+			{
+				if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[6]")).getText()))
+				{
+					System.out.print("in openLowMidcap block");
+					System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+					openLowMidcap.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+											
+				}
+			}
+				catch(Exception e)
+				{
+					if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[6]")).getText()))
+					{
+						System.out.print("in openLowMidcap block");
+						System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+						openLowMidcap.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+												
+					}
+				}
+			}
+		return openLowMidcap;
+		
+		
+		
+		 }
+		
+		
+	
+	//nifty midcap 50 open high
+	public ArrayList<String> openHighMidcap(ChromeOptions chrome, WebDriver driv)
+	{
+		driv.get("https://nseindia.com/live_market/dynaContent/live_watch/equities_stock_watch.htm");
+		Select dropdown = new Select(driv.findElement(By.xpath("//*[@id=\"bankNiftySelect\"]")));
+		dropdown.selectByIndex(2);
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		for(int i = 3;i<53;i++)
+		 {
+			try
+			{
+				System.out.print(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText()+"::");
+				driv.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+				System.out.print(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()+"::");
+				driv.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText());
+			}
+			catch(StaleElementReferenceException e)
+			{
+				System.out.print(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText()+"::");
+				driv.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+				System.out.print(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()+"::");
+				driv.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText());
+			}
+			
+		 //open high
+		//	 if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText()))
+			 try
+			 {
+				 if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText()))
+				 {
+						System.out.print("in openHighMidcap method try");
+						System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+						openHighMidcap.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+								
+					}
+			 }
+			 catch(StaleElementReferenceException e)
+			 {
+				 driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+				 if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText()))
+				 {
+						System.out.print("in openHighMidcap method catch");
+						System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+						openHighMidcap.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+								
+					}
+				 else
+				 {
+					 System.out.println("no data for midcap open high");
+				 }
+				 
+			 }
+			/*{
+				System.out.print("in open high 50 block");
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+				openHighNext50.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+						
+			}*/
+		
+		 }
+		
+		return openHighMidcap;
+	}
+	//open high for next 50
+	public ArrayList<String>openHigh50(ChromeOptions chrome, WebDriver driv)
+	{
+		driv.get("https://nseindia.com/live_market/dynaContent/live_watch/equities_stock_watch.htm");
+		driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr[3]/td[1]/a"));
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		Select dropdown = new Select(driv.findElement(By.xpath("//*[@id=\"bankNiftySelect\"]")));
+		dropdown.selectByIndex(1);
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		for(int i = 3;i<53;i++)
+		 {
+		
+		 //open high
+		try
+		{
+			if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText()))
+			{
+				System.out.print("in open high 50 block");
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+				openHighNext50.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+						
+			}
+		}
+		catch(StaleElementReferenceException e)
+		{
+			if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[5]")).getText()))
+			{
+				System.out.print("in open high 50 block");
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+				openHighNext50.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+						
+			}
+		}
+		
+		 }
+		return openHighNext50;
+	}
+	
+	
+	public ArrayList<String>openLow(ChromeOptions chrome, WebDriver driv)
+	{
+		driv.get("https://nseindia.com/live_market/dynaContent/live_watch/equities_stock_watch.htm");
+		driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr[3]/td[1]/a"));
+		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		for(int i = 3;i<53;i++)
+		 {
+		
+		 //open low
+			if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[6]")).getText()))
+			{
+				System.out.print("in open low block");
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+				openLow.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+										
+			}
+		
+		 }
+		return openLow;
+	}
+	
+	//open low next 50
+	public ArrayList<String>openLowNext50(ChromeOptions chrome, WebDriver driv)
+	{
+		driv.get("https://nseindia.com/live_market/dynaContent/live_watch/equities_stock_watch.htm");
+		Select dropdown = new Select(driv.findElement(By.xpath("//*[@id=\"bankNiftySelect\"]")));
+		dropdown.selectByIndex(1);
+		driv.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		for(int i = 3;i<53;i++)
+		 {
+		
+		 //open low
+			if((driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[4]")).getText()).equals(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[6]")).getText()))
+			{
+				System.out.print("in open low 50 block");
+				System.out.println(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+				openLowNext50.add(driv.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[3]/table/tbody/tr["+i+"]/td[1]/a")).getText());
+										
+			}
+		
+		 }
+		return openLowNext50;
+	}
+	
 	public String[] marketLooser50(ChromeOptions chrome, WebDriver driv)
 	{
 		String [] stocks = new String[20]; 

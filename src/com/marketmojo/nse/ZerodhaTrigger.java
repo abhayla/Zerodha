@@ -1,9 +1,11 @@
 package com.marketmojo.nse;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,6 +20,7 @@ public class ZerodhaTrigger {
 	{
 		
 		driv.manage().window().maximize();
+//		driv.manage().window().setPosition(new Point(-2000, 0));
 		driv.get("https://kite.zerodha.com/");
 		driv.findElement(By.xpath("//INPUT[@type='text']")).sendKeys("YD3179");
 		driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -178,4 +181,89 @@ public class ZerodhaTrigger {
 			System.out.println("fno looser completed");
 
 		}
+		
+		void openHighTrigger(ChromeOptions chrome, WebDriver driv, ArrayList<String> openHighStocks)
+		{
+			driv.get("https://kite.zerodha.com/");
+			driv.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/ul/li[3]")).click();
+			for(String s : openHighStocks)
+			{
+				System.out.println("Open high stock : "+ s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(Keys.ENTER);
+				driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			}
+				System.out.println("Open High stocks completed");
+			}
+		void openLowTrigger(ChromeOptions chrome, WebDriver driv, ArrayList<String> openLowStocks)
+		{
+			driv.get("https://kite.zerodha.com/");
+			driv.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/ul/li[3]")).click();
+			for(String s : openLowStocks)
+			{
+				System.out.println("Open low stock : "+ s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(Keys.ENTER);
+				driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			}
+				System.out.println("Open low stocks completed");
+			}
+		
+		//open high next 50
+		void openHighNext50Trigger(ChromeOptions chrome, WebDriver driv, ArrayList<String> openHighStocks)
+		{
+			driv.get("https://kite.zerodha.com/");
+			driv.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/ul/li[3]")).click();
+			for(String s : openHighStocks)
+			{
+				System.out.println("Open high stock : "+ s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(Keys.ENTER);
+				driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			}
+				System.out.println("Open High next 50 stocks completed");
+			}
+		//open low next 50
+		void openLowNext50Trigger(ChromeOptions chrome, WebDriver driv, ArrayList<String> openLowStocks)
+		{
+			driv.get("https://kite.zerodha.com/");
+			driv.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/ul/li[3]")).click();
+			for(String s : openLowStocks)
+			{
+				System.out.println("Open low stock : "+ s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(Keys.ENTER);
+				driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			}
+				System.out.println("Open low next 50 stocks completed");
+			}
+		void openHighMidcapTrigger(ChromeOptions chrome, WebDriver driv, ArrayList<String> openHighMid)
+		{
+			driv.get("https://kite.zerodha.com/");
+			driv.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/ul/li[3]")).click();
+			for(String s : openHighMid)
+			{
+				System.out.println("Open low stock : "+ s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(Keys.ENTER);
+				driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			}
+				System.out.println("openHighMidcapTrigger method is completed");
+		}
+		
+		void openLowMidcapTrigger(ChromeOptions chrome, WebDriver driv, ArrayList<String> openHighMid)
+		{
+			driv.get("https://kite.zerodha.com/");
+			driv.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/ul/li[3]")).click();
+			for(String s : openHighMid)
+			{
+				System.out.println("Open low stock : "+ s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(s);
+				driv.findElement(By.xpath("//*[@id=\"search-input\"]")).sendKeys(Keys.ENTER);
+				driv.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			}
+				System.out.println("openLowMidcapTrigger method is completed");
+				driv.manage().window().maximize();
+		}			
+		
 }
